@@ -1,5 +1,6 @@
 package com.example.raphaelbonini.sunshine;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -91,11 +93,22 @@ public class ForecastFragment extends Fragment {
 
         ListView listView = (ListView) rootView.findViewById(R.id.listView_forecast);
         listView.setAdapter(mForecastAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-        return rootView;
-    }
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l){
+                String forecast = mForecastAdapter.getItem(position);
+                Intent intent = new Intent(getActivity(), DetailActivity.class)
+                        .putExtra(Intent.EXTRA_TEXT, forecast);
+                startActivity(intent);
+            }
 
-    public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
+        });
+
+            return rootView;
+        }
+
+        public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
 
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
